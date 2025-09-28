@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mobile Engineering Q3 Achievements</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* CSS Custom Properties for Theming */
+            :root {
+                /* Light Theme Colors */
+                --primary-color: #00BAB3;
+                --primary-dark: #008d88;
+                --secondary-color: #fbe8e0;
+                --background-color: #fceee8;
+                --card-background: #ffffff;
+                --text-primary: #1f2937;
+                --text-secondary: #4b5563;
+                --text-muted: #6b7280;
+                --border-color: #e5e7eb;
+                --shadow-light: rgba(0, 0, 0, 0.1);
+                --shadow-medium: rgba(0, 0, 0, 0.15);
+                --shadow-heavy: rgba(0, 0, 0, 0.25);
+
+                /* Contextual text colors */
+                --body-text: var(--text-primary);
+                --text-on-secondary: var(--text-primary);
+
+                /* Typography */
+                --font-family: "Poppins", sans-serif;
+                --font-size-xs: 0.75rem;
+                --font-size-sm: 0.875rem;
+                --font-size-base: 1rem;
+                --font-size-lg: 1.125rem;
+                --font-size-xl: 1.25rem;
+                --font-size-2xl: 1.5rem;
+                --font-size-3xl: 1.875rem;
+                --font-size-4xl: 2.25rem;
+                --font-size-5xl: 3rem;
+                --font-size-6xl: 3.75rem;
+                --font-size-7xl: 4.5rem;
+            }
+
+            /* Brand Theme: Teal background with white cards */
+            [data-theme="dark"] {
+                --primary-color: #00BAB3;
+                --primary-dark: #008d88;
+                --secondary-color: #00BAB3; /* elements using bg-secondary become teal */
+                --background-color: #00BAB3; /* body background teal */
+                --card-background: #ffffff;  /* white cards */
+                --text-primary: #1f2937;     /* dark text inside cards */
+                --text-secondary: #4b5563;
+                --text-muted: #6b7280;
+                --border-color: #e5e7eb;
+                --shadow-light: rgba(0, 0, 0, 0.1);
+                --shadow-medium: rgba(0, 0, 0, 0.15);
+                --shadow-heavy: rgba(0, 0, 0, 0.25);
+
+                /* Contextual text colors */
+                --body-text: #ffffff;           /* white text on teal background */
+                --text-on-secondary: #ffffff;   /* white text inside teal sections */
+            }
+            /* Keep slide 1 and 6 light in brand teal theme */
+            [data-theme="dark"] #slide-1,
+            [data-theme="dark"] #slide-6 {
+                background-color: #fbe8e0;
+                color: #1f2937;
+            }
+            /* Ensure accent teal still shows where used */
+            [data-theme="dark"] #slide-1 .text-accent,
+            [data-theme="dark"] #slide-6 .text-accent {
+                color: #00BAB3;
+            }
+
+
+            body {
+                font-family: var(--font-family);
+                background-color: var(--background-color);
+                color: var(--body-text);
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .slide {
+                display: none;
+                min-height: 100vh;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            }
+            .slide.active {
+                display: flex;
+                opacity: 1;
+            }
+
+            .card {
+                background-color: var(--card-background);
+                color: var(--text-primary);
+                border-radius: 1.5rem;
+                box-shadow:
+                    0 20px 25px -5px var(--shadow-light),
+                    0 8px 10px -6px var(--shadow-light);
+                transform: translateY(0);
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease,
+                    background-color 0.3s ease;
+            }
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 25px 50px -12px var(--shadow-heavy);
+            }
+
+            .impact-number {
+                font-size: var(--font-size-5xl);
+                font-weight: 700;
+                line-height: 1;
+                color: var(--primary-color);
+            }
+            .impact-text {
+                color: var(--text-secondary);
+            }
+            .nav-button {
+                position: fixed;
+                bottom: 2rem;
+                background-color: var(--card-background);
+                border: 1px solid var(--border-color);
+                border-radius: 50%;
+                width: 3.5rem;
+                height: 3.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 6px var(--shadow-light);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                backdrop-filter: blur(5px);
+                color: var(--text-secondary);
+            }
+            .nav-button:hover {
+                transform: scale(1.1);
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+            #prevBtn {
+                left: 2rem;
+            }
+            #nextBtn {
+                right: 2rem;
+            }
+
+            /* Theme Toggle Button */
+            #themeToggle {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background-color: var(--card-background);
+                border: 1px solid var(--border-color);
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 6px var(--shadow-light);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                backdrop-filter: blur(5px);
+                color: var(--text-secondary);
+                z-index: 1000;
+            }
+            #themeToggle:hover {
+                transform: scale(1.1);
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+
+            /* Card click styles */
+            .card {
+                cursor: pointer;
+                position: relative;
+            }
+
+            .card[data-action]:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 30px 60px -12px rgb(0 0 0 / 0.3);
+            }
+
+
+
+            /* Image Modal Styles */
+            .image-modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(5px);
+            }
+
+            .image-modal.active {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .modal-content {
+                position: relative;
+                max-width: 90%;
+                max-height: 90%;
+                background: var(--card-background);
+                border-radius: 1rem;
+                padding: 1rem;
+                box-shadow: 0 25px 50px -12px var(--shadow-heavy);
+                border: 1px solid var(--border-color);
+            }
+
+            .modal-image {
+                width: 100%;
+                height: auto;
+                max-height: 80vh;
+                object-fit: contain;
+                border-radius: 0.5rem;
+            }
+
+            .modal-close {
+                position: absolute;
+                top: -1rem;
+                right: -1rem;
+                background: #ff4757;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                font-size: var(--font-size-xl);
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+                transition: all 0.2s ease;
+            }
+
+            .modal-close:hover {
+                transform: scale(1.1);
+                background: #ff3742;
+            }
+
+            /* Consistent Typography Classes */
+            .heading-primary {
+                font-size: var(--font-size-5xl);
+                font-weight: 700;
+                color: inherit;
+            }
+            .heading-secondary {
+                font-size: var(--font-size-4xl);
+                font-weight: 700;
+                color: inherit;
+            }
+            .heading-tertiary {
+                font-size: var(--font-size-xl);
+                font-weight: 600;
+                color: inherit;
+            }
+            .heading-quaternary {
+                font-size: var(--font-size-2xl);
+                font-weight: 600;
+                color: inherit;
+            }
+            .text-accent {
+                color: var(--primary-color);
+            }
+
+            /* Buttons */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.625rem 1rem;
+                border-radius: 0.75rem;
+                font-weight: 600;
+                border: 1px solid transparent;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: 0 4px 6px var(--shadow-light);
+            }
+            .btn-primary {
+                background-color: var(--primary-color);
+                color: #ffffff;
+                border-color: var(--primary-color);
+            }
+            .btn-primary:hover {
+                background-color: var(--primary-dark);
+                transform: translateY(-1px);
+                box-shadow: 0 10px 15px -3px var(--shadow-medium), 0 4px 6px -4px var(--shadow-light);
+            }
+            .text-accent-dark {
+                color: var(--primary-dark);
+            }
+            .bg-accent {
+                background-color: var(--primary-color);
+            }
+            .bg-secondary {
+                background-color: var(--secondary-color);
+                color: var(--text-on-secondary);
+            }
+            .text-secondary {
+                color: var(--text-secondary);
+            }
+            .text-muted {
+                color: var(--text-muted);
+            }
+            .icon-accent {
+                color: var(--primary-color);
+            }
+
+            /* Dashboard placeholder styling */
+            .dashboard-placeholder {
+                background-color: var(--border-color);
+                border-radius: 0.5rem;
+                padding: 1rem;
+                font-size: var(--font-size-sm);
+                color: var(--text-muted);
+                font-style: italic;
+            }
+
+            @media (min-width: 768px) {
+                .heading-primary {
+                    font-size: var(--font-size-7xl);
+                }
+                .heading-secondary {
+                    font-size: var(--font-size-5xl);
+                }
+
+            }
+
+            /* Equal height cards on Roadmap (slide 5) */
+            #slide-5 .grid { grid-auto-rows: 1fr; align-items: stretch; }
+            #slide-5 .grid > .card { height: 100%; display: flex; flex-direction: column; }
+
+
+            /* Subtle reveal animations */
+            .will-reveal { opacity: 0; transform: translateY(12px); }
+            .will-reveal.revealed {
+                opacity: 1; transform: translateY(0);
+                transition: opacity .7s cubic-bezier(0.22, 1, 0.36, 1), transform .9s cubic-bezier(0.22, 1, 0.36, 1);
+                transition-delay: var(--reveal-delay, 0s);
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .will-reveal, .will-reveal.revealed { opacity: 1 !important; transform: none !important; transition: none !important; }
+            }
+
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" title="Toggle Dark/Light Mode">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+        </button>
+        <div
+            id="slide-1"
+            class="slide active flex-col justify-center items-center text-center p-8 bg-secondary"
+        >
+            <div class="max-w-4xl mx-auto">
+                <img
+                    src="https://www.wylth.com/src/image/logo.svg"
+                    alt="Company Logo"
+                    class="h-20 mx-auto mb-10"
+                />
+                <h1 class="heading-primary tracking-tight mb-4">
+                    Mobile Engineering
+                </h1>
+                <h2 class="text-3xl md:text-5xl font-semibold text-accent mb-8">
+                    Achievements & Future Roadmap
+                </h2>
+                <p class="text-xl">
+                    Driving Stability, Efficiency, and User Insights.
+                </p>
+            </div>
+        </div>
+
+        <div
+            id="slide-2"
+            class="slide flex-col justify-center items-center p-4 md:p-8"
+        >
+            <div class="w-full max-w-6xl mx-auto">
+                <h2 class="heading-secondary text-center mb-12">
+                    Core Infrastructure & Architecture
+                </h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-8" data-action="image" data-url="https://via.placeholder.com/800x600/00BAB3/white?text=Feature+Revamps+Screenshot">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 text-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Feature Revamps
+                            </h3>
+                        </div>
+                        <p style="color: var(--text-secondary)">
+                            Modernized key user flows (Biometric Login, Clients
+                            Page, Quick Access Reports) for a smoother, more
+                            intuitive user experience.
+                        </p>
+                    </div>
+                    <div class="card p-8" data-action="link" data-url="https://developer.android.com/studio/build/build-variants">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 text-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">Build Flavors</h3>
+                        </div>
+                        <p style="color: var(--text-secondary)">
+                            Separated UAT/Prod builds, eliminating
+                            uninstall/reinstall cycles and accelerating testing.
+                        </p>
+                    </div>
+                    <div class="card p-8">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Network Interceptor
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Integrated 'Alice' for on-device network inspection,
+                            drastically reducing debugging time for API issues.
+                        </p>
+                    </div>
+                    <div class="card p-8">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">Remote Config</h3>
+                        </div>
+                        <p class="text-secondary">
+                            Implemented feature flags and kill switches for safe
+                            rollouts and instant issue mitigation.
+                        </p>
+                    </div>
+                    <div class="card p-8">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">App Stability</h3>
+                        </div>
+                        <p class="text-secondary">
+                            Separated Firebase projects and improved stability.
+                            <br />
+                            <span class="font-bold text-accent-dark text-lg"
+                                >Achieved 99.5%+ crash-free users.</span
+                            >
+                        </p>
+                    </div>
+                    <div class="card p-8">
+                        <div class="flex items-center mb-4">
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Enhanced Control
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Added device info in API headers, enabling backend
+                            to remotely control/fix client-side issues.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: WHITE LABEL AUTOMATION WITH ICONS -->
+        <div
+            id="slide-3"
+            class="slide flex-col justify-center items-center p-8 bg-secondary"
+        >
+            <div class="text-center max-w-5xl mx-auto">
+                <h2 class="heading-secondary mb-6">White Label Automation</h2>
+                <p class="text-xl mb-12">
+                    From a manual ~45 minute development task to a fully
+                    automated process.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div class="card p-8">
+                        <div class="flex items-center mb-2">
+                            <!-- Clock Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke-width="2"
+                                ></circle>
+                                <path
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M12 6v6l4 2"
+                                ></path>
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Rapid App Creation (&lt;5 min)
+                            </h3>
+                        </div>
+                        <p class="impact-text text-secondary">
+                            An <span class="font-bold">89% reduction</span> in
+                            time-to-create for new white label apps. This frees
+                            up significant developer hours.
+                        </p>
+                    </div>
+                    <div class="card p-8">
+                        <div class="flex items-center mb-3">
+                            <!-- Key Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <!-- Lock body -->
+                                <rect
+                                    x="6"
+                                    y="10"
+                                    width="12"
+                                    height="10"
+                                    rx="2"
+                                    ry="2"
+                                    stroke-width="2"
+                                />
+                                <!-- Lock shackle -->
+                                <path
+                                    d="M9 10V7a3 3 0 016 0v3"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                                <!-- Key teeth -->
+                                <path
+                                    d="M15 15l3 3"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Dynamic App Signing
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Automated keystore generation eliminates a common
+                            cause of Google Play rejections, ensuring smoother
+                            launches.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: USER INSIGHTS WITH ICONS -->
+        <div
+            id="slide-4"
+            class="slide flex-col justify-center items-center p-8"
+        >
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="heading-secondary mb-6">Unlocking User Insights</h2>
+                <p class="text-xl mb-12">
+                    Moving from guessing to knowing. We now have the tools to
+                    understand exactly how users interact with our app.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div class="card p-8" data-action="link" data-url="https://clarity.microsoft.com">
+                        <div class="flex items-center mb-3">
+                            <!-- Eye Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"
+                                />
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="3"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Heatmaps & Session Recordings
+                            </h3>
+                        </div>
+                        <p class="text-secondary mb-4">
+                            With <span class="font-bold">Clarity SDK</span>, we
+                            can visually analyze user behavior, identify pain
+                            points, and see where users get stuck.
+                        </p>
+                        <div class="mt-4">
+                            <button class="btn btn-primary" aria-label="View Dashboard">
+                                View Dashboard
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card p-8" data-action="link" data-url="https://mixpanel.com">
+                        <div class="flex items-center mb-3">
+                            <!-- Cursor Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <!-- Pin outline -->
+                                <path
+                                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                                <!-- Track point inside pin -->
+                                <circle cx="12" cy="9" r="2" stroke-width="2" />
+                                <!-- Optional path line (track) -->
+                                <path
+                                    d="M12 11v5"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Granular Event Tracking
+                            </h3>
+                        </div>
+                        <p class="text-secondary mb-4">
+                            Using <span class="font-bold">Mixpanel</span>, we've
+                            implemented detailed view and action events to build
+                            funnels, analyze feature adoption, and make
+                            data-driven decisions.
+                        </p>
+                        <div class="mt-4">
+                            <button class="btn btn-primary" aria-label="View Dashboard">
+                                View Dashboard
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                    <div class="mt-12">
+                        <blockquote class="slide-quote italic text-base md:text-lg font-medium max-w-2xl mx-auto">
+                            “With great data comes great product decisions.”
+                        </blockquote>
+                    </div>
+
+            </div>
+        </div>
+
+        <!-- SLIDE 5: ROADMAP WITH ICONS -->
+        <div
+            id="slide-5"
+            class="slide flex-col justify-center items-center p-8"
+        >
+            <div class="text-center max-w-5xl mx-auto">
+                <h2 class="heading-secondary mb-6">
+                    Roadmap: The Next 90 Days
+                </h2>
+                <p class="text-xl mb-12">
+                    Our focus is on performance, deeper automation, and
+                    personalization.
+                </p>
+                <div class="grid md:grid-cols-2 gap-8 text-left">
+                    <div class="card p-6">
+                        <div class="flex items-center mb-2">
+                            <!-- Lightning Bolt Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                App Performance & Caching Strategy
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Optimized API calls and smart loading to boost
+                            caching and speed up app screens.
+                        </p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="flex items-center mb-2">
+                            <!-- Dashboard Grid Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                    stroke-width="2"
+                                />
+                                <rect
+                                    x="14"
+                                    y="3"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                    stroke-width="2"
+                                />
+                                <rect
+                                    x="14"
+                                    y="14"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                    stroke-width="2"
+                                />
+                                <rect
+                                    x="3"
+                                    y="14"
+                                    width="7"
+                                    height="7"
+                                    rx="1"
+                                    stroke-width="2"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                Whitelabel Automation Dashboard
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Build a self-service internal dashboard for
+                            non-technical teams to create and manage white label
+                            apps, completely removing engineering from the
+                            process.
+                        </p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="flex items-center mb-2">
+                            <!-- Line Chart Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M3 17l6-6 4 4 8-8"
+                                />
+                                <path
+                                    d="M21 21H3"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">
+                                User-Level Analytics
+                            </h3>
+                        </div>
+                        <p class="text-secondary">
+                            Implement advanced tracking to analyze individual
+                            user journeys, enabling highly personalized
+                            experiences and targeted support.
+                        </p>
+                    </div>
+                    <div class="card p-6">
+                        <div class="flex items-center mb-2">
+                            <!-- Bell/Notification Icon -->
+                            <svg
+                                class="w-8 h-8 icon-accent mr-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5"
+                                />
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13.73 21a2 2 0 01-3.46 0"
+                                />
+                            </svg>
+                            <h3 class="heading-tertiary">Push Notifications &amp; In-app popup</h3>
+                        </div>
+                        <p class="text-secondary">
+                            Drive user engagement with targeted in-app notifications and popups.
+                            Fully customizable for whitelabel partners so each tenant can run
+                            client-specific campaigns and messaging.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div
+            id="slide-6"
+            class="slide flex-col justify-center items-center text-center p-8"
+        >
+            <div class="max-w-4xl mx-auto">
+                <img
+                    src="https://www.wylth.com/src/image/logo.svg"
+                    alt="Company Icon"
+                    class="h-24 mx-auto mb-8"
+                />
+                <h2 class="heading-primary mb-6">Thank You</h2>
+                <p class="text-2xl text-secondary">Q&A</p>
+            </div>
+        </div>
+
+        <div id="prevBtn" class="nav-button">
+            <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 19l-7-7 7-7"
+                ></path>
+            </svg>
+        </div>
+        <div id="nextBtn" class="nav-button">
+            <svg
+                class="w-8 h-8"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 5l7 7-7 7"
+                ></path>
+            </svg>
+        </div>
+
+        <!-- Image Modal -->
+        <div id="imageModal" class="image-modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeImageModal()">&times;</button>
+                <img id="modalImage" class="modal-image" src="" alt="Modal Image">
+            </div>
+        </div>
+
+        <script>
+            let currentSlide = 1;
+            const totalSlides = document.querySelectorAll(".slide").length;
+
+            function showSlide(slideNumber) {
+                document.querySelectorAll(".slide").forEach((slide) => {
+                    slide.classList.remove("active");
+                });
+                const slideEl = document.getElementById(`slide-${slideNumber}`);
+                slideEl.classList.add("active");
+                updateNavButtons();
+                animateSlide(slideNumber);
+            }
+
+            function animateSlide(slideNumber) {
+                const slide = document.getElementById(`slide-${slideNumber}`);
+                if (!slide) return;
+
+                // Reset previous reveals so animations can replay
+                document.querySelectorAll('.will-reveal.revealed').forEach(el => {
+                    el.classList.remove('revealed');
+                    el.style.removeProperty('--reveal-delay');
+                });
+
+                const header = slide.querySelector('.heading-primary, .heading-secondary');
+                const intro = slide.querySelector('p.text-xl');
+                const cards = slide.querySelectorAll('.grid > .card');
+
+                let base = 0;
+                const reveal = (el, delay) => {
+                    if (!el) return;
+                    el.classList.add('will-reveal');
+                    el.style.setProperty('--reveal-delay', `${delay.toFixed(2)}s`);
+                    requestAnimationFrame(() => el.classList.add('revealed'));
+                };
+
+                // Headline and intro first
+                reveal(header, base);
+                base += 0.10;
+                reveal(intro, base);
+                base += 0.10;
+
+                // Cards staggered
+                cards.forEach((card, idx) => {
+                    reveal(card, 0.20 + idx * 0.15);
+                });
+
+                // Slide 4: reveal quote after cards
+                if (slideNumber === 4) {
+                    const quote = slide.querySelector('blockquote, .slide-quote');
+                    if (quote) {
+                        const delay = 0.20 + (cards.length ? (cards.length - 1) * 0.15 : 0) + 0.30;
+                        reveal(quote, delay);
+                    }
+                }
+            }
+
+
+            function updateNavButtons() {
+                document.getElementById("prevBtn").style.display =
+                    currentSlide === 1 ? "none" : "flex";
+                document.getElementById("nextBtn").style.display =
+                    currentSlide === totalSlides ? "none" : "flex";
+            }
+
+            document.getElementById("nextBtn").addEventListener("click", () => {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                }
+            });
+
+            document.getElementById("prevBtn").addEventListener("click", () => {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "ArrowRight" && currentSlide < totalSlides) {
+                    currentSlide++;
+                    showSlide(currentSlide);
+                } else if (event.key === "ArrowLeft" && currentSlide > 1) {
+                    currentSlide--;
+                    showSlide(currentSlide);
+                }
+            });
+
+            // Initialize first slide with animation
+            showSlide(currentSlide);
+
+            // Theme toggle functionality
+            function toggleTheme() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+
+                // Update theme toggle icon
+                const themeToggle = document.getElementById('themeToggle');
+                const icon = themeToggle.querySelector('svg');
+
+                if (newTheme === 'dark') {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>';
+                } else {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>';
+                }
+            }
+
+            // Initialize theme
+            function initializeTheme() {
+                const savedTheme = localStorage.getItem('theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+
+                // Set initial icon
+                const themeToggle = document.getElementById('themeToggle');
+                const icon = themeToggle.querySelector('svg');
+
+                if (savedTheme === 'dark') {
+                    icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>';
+                }
+            }
+
+            // Card click functionality
+            function handleCardClick(event) {
+                const card = event.currentTarget;
+                const action = card.getAttribute('data-action');
+                const url = card.getAttribute('data-url');
+
+                if (!action || !url) return;
+
+                if (action === 'link') {
+                    // Open link in new tab
+                    window.open(url, '_blank');
+                } else if (action === 'image') {
+                    // Open image in modal
+                    openImageModal(url);
+                }
+            }
+
+            function openImageModal(imageUrl) {
+                const modal = document.getElementById('imageModal');
+                const modalImage = document.getElementById('modalImage');
+
+                modalImage.src = imageUrl;
+                modal.classList.add('active');
+
+                // Prevent body scroll when modal is open
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeImageModal() {
+                const modal = document.getElementById('imageModal');
+                modal.classList.remove('active');
+
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }
+
+            // Add click event listeners to all cards with data-action
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize theme
+                initializeTheme();
+
+                // Theme toggle event listener
+                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+                const actionCards = document.querySelectorAll('.card[data-action]');
+                actionCards.forEach(card => {
+                    card.addEventListener('click', handleCardClick);
+                });
+
+                // Close modal when clicking outside the image
+                document.getElementById('imageModal').addEventListener('click', function(event) {
+                    if (event.target === this) {
+                        closeImageModal();
+                    }
+                });
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        closeImageModal();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
