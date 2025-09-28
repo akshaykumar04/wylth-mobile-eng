@@ -179,6 +179,12 @@
                 border-color: var(--primary-color);
             }
 
+
+            /* Hide UI chrome on mobile during scroll */
+            @media (max-width: 767px) {
+                .chrome-hidden { opacity: 0; transform: translateY(8px); pointer-events: none; }
+            }
+
             /* Card click styles */
             .card {
                 cursor: pointer;
@@ -1174,6 +1180,24 @@
                         closeImageModal();
                     }
                 });
+
+
+	                // Hide theme toggle and nav arrows while scrolling on mobile
+	                const chromeEls = [
+	                    document.getElementById('themeToggle'),
+	                    document.getElementById('prevBtn'),
+	                    document.getElementById('nextBtn')
+	                ];
+	                const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+	                let scrollHideTimer;
+	                window.addEventListener('scroll', () => {
+	                    if (!isMobile()) return;
+	                    chromeEls.forEach(el => el && el.classList.add('chrome-hidden'));
+	                    clearTimeout(scrollHideTimer);
+	                    scrollHideTimer = setTimeout(() => {
+	                        chromeEls.forEach(el => el && el.classList.remove('chrome-hidden'));
+	                    }, 250);
+	                }, { passive: true });
 
                 // Close modal with Escape key
                 document.addEventListener('keydown', function(event) {
