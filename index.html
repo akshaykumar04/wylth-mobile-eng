@@ -1099,6 +1099,18 @@
                 }
             }
 
+
+	            // Helper to open links reliably on mobile (iOS/Android)
+	            function openLinkInNewTab(url) {
+	                const a = document.createElement('a');
+	                a.href = url;
+	                a.target = '_blank';
+	                a.rel = 'noopener';
+	                document.body.appendChild(a);
+	                a.click();
+	                a.remove();
+	            }
+
             // Card click functionality
             function handleCardClick(event) {
                 const card = event.currentTarget;
@@ -1108,8 +1120,8 @@
                 if (!action || !url) return;
 
                 if (action === 'link') {
-                    // Open link in new tab
-                    window.open(url, '_blank');
+                    // Open link in new tab (mobile-safe)
+                    openLinkInNewTab(url);
                 } else if (action === 'image') {
                     // Open image in modal
                     openImageModal(url);
@@ -1145,7 +1157,15 @@
 
                 const actionCards = document.querySelectorAll('.card[data-action]');
                 actionCards.forEach(card => {
-                    card.addEventListener('click', handleCardClick);
+                    const onActivate = (e) => {
+                        // Guard to avoid double-trigger on mobile (touchend + click)
+                        if (card.dataset.tapHandled === '1') return;
+                        card.dataset.tapHandled = '1';
+                        setTimeout(() => { delete card.dataset.tapHandled; }, 350);
+                        handleCardClick(e);
+                    };
+                    card.addEventListener('click', onActivate);
+                    card.addEventListener('touchend', onActivate, { passive: true });
                 });
 
                 // Close modal when clicking outside the image
