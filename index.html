@@ -189,6 +189,8 @@
             .card {
                 cursor: pointer;
                 position: relative;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
             }
 
             .card[data-action]:hover {
@@ -1163,15 +1165,36 @@
 
                 const actionCards = document.querySelectorAll('.card[data-action]');
                 actionCards.forEach(card => {
-                    const onActivate = (e) => {
-                        // Guard to avoid double-trigger on mobile (touchend + click)
+                    let startX = 0, startY = 0, moved = false;
+
+                    // Desktop and non-touch devices
+                    card.addEventListener('click', (e) => {
+                        if (card.dataset.tapHandled === '1') return; // ignore if just handled by touch
+                        handleCardClick(e);
+                    });
+
+                    // Touch handling to avoid triggering on scroll
+                    card.addEventListener('touchstart', (e) => {
+                        const t = e.changedTouches[0];
+                        startX = t.clientX; startY = t.clientY; moved = false;
+                    }, { passive: true });
+
+                    card.addEventListener('touchmove', (e) => {
+                        const t = e.changedTouches[0];
+                        if (Math.abs(t.clientX - startX) > 10 || Math.abs(t.clientY - startY) > 10) {
+                            moved = true;
+                        }
+                    }, { passive: true });
+
+                    card.addEventListener('touchcancel', () => { moved = true; }, { passive: true });
+
+                    card.addEventListener('touchend', (e) => {
+                        if (moved) return; // treat as scroll, not tap
                         if (card.dataset.tapHandled === '1') return;
                         card.dataset.tapHandled = '1';
                         setTimeout(() => { delete card.dataset.tapHandled; }, 350);
                         handleCardClick(e);
-                    };
-                    card.addEventListener('click', onActivate);
-                    card.addEventListener('touchend', onActivate, { passive: true });
+                    }, { passive: true });
                 });
 
                 // Close modal when clicking outside the image
