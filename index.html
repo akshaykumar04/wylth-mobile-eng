@@ -412,7 +412,7 @@
                     Core Infrastructure & Architecture
                 </h2>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="card p-8" data-action="image" data-url="https://via.placeholder.com/800x600/00BAB3/white?text=Feature+Revamps+Screenshot">
+                    <div class="card p-8">
                         <div class="flex items-center mb-4">
                             <svg
                                 class="w-8 h-8 text-accent mr-4"
@@ -438,7 +438,7 @@
                             intuitive user experience.
                         </p>
                     </div>
-                    <div class="card p-8" data-action="link" data-url="https://developer.android.com/studio/build/build-variants">
+                    <div class="card p-8" data-action="image" data-url="assets/Slide2.png">
                         <div class="flex items-center mb-4">
                             <svg
                                 class="w-8 h-8 text-accent mr-4"
@@ -461,7 +461,7 @@
                             uninstall/reinstall cycles and accelerating testing.
                         </p>
                     </div>
-                    <div class="card p-8">
+                    <div class="card p-8" data-action="image" data-url="assets/Slide1.png">
                         <div class="flex items-center mb-4">
                             <svg
                                 class="w-8 h-8 icon-accent mr-4"
@@ -509,7 +509,7 @@
                             rollouts and instant issue mitigation.
                         </p>
                     </div>
-                    <div class="card p-8">
+                    <div class="card p-8" data-action="link" data-url="https://console.firebase.google.com/u/0/project/wylth-client/crashlytics/app/android:com.wylth.wylthinvestorapp/issues?state=open&time=90d&types=crash&tag=all&sort=eventCount">
                         <div class="flex items-center mb-4">
                             <svg
                                 class="w-8 h-8 icon-accent mr-4"
@@ -531,11 +531,11 @@
                             Separated Firebase projects and improved stability.
                             <br />
                             <span class="font-bold text-accent-dark text-lg"
-                                >Achieved 99.5%+ crash-free users.</span
+                                >Achieved 99.2%+ crash-free users from 92.5% average.</span
                             >
                         </p>
                     </div>
-                    <div class="card p-8">
+                    <div class="card p-8" data-action="image" data-url="assets/Slide3.png">
                         <div class="flex items-center mb-4">
                             <svg
                                 class="w-8 h-8 icon-accent mr-4"
@@ -1165,36 +1165,15 @@
 
                 const actionCards = document.querySelectorAll('.card[data-action]');
                 actionCards.forEach(card => {
-                    let startX = 0, startY = 0, moved = false;
-
-                    // Desktop and non-touch devices
-                    card.addEventListener('click', (e) => {
-                        if (card.dataset.tapHandled === '1') return; // ignore if just handled by touch
-                        handleCardClick(e);
-                    });
-
-                    // Touch handling to avoid triggering on scroll
-                    card.addEventListener('touchstart', (e) => {
-                        const t = e.changedTouches[0];
-                        startX = t.clientX; startY = t.clientY; moved = false;
-                    }, { passive: true });
-
-                    card.addEventListener('touchmove', (e) => {
-                        const t = e.changedTouches[0];
-                        if (Math.abs(t.clientX - startX) > 10 || Math.abs(t.clientY - startY) > 10) {
-                            moved = true;
-                        }
-                    }, { passive: true });
-
-                    card.addEventListener('touchcancel', () => { moved = true; }, { passive: true });
-
-                    card.addEventListener('touchend', (e) => {
-                        if (moved) return; // treat as scroll, not tap
+                    const onActivate = (e) => {
+                        // Guard to avoid double-trigger on mobile (touchend + click)
                         if (card.dataset.tapHandled === '1') return;
                         card.dataset.tapHandled = '1';
                         setTimeout(() => { delete card.dataset.tapHandled; }, 350);
                         handleCardClick(e);
-                    }, { passive: true });
+                    };
+                    card.addEventListener('click', onActivate);
+                    card.addEventListener('touchend', onActivate, { passive: true });
                 });
 
                 // Close modal when clicking outside the image
